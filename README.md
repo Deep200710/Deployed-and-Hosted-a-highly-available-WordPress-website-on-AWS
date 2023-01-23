@@ -49,6 +49,10 @@ CloudFront (Content delivery network)
 
 - Choose Create VPC
 
+
+![vpc (2)](https://user-images.githubusercontent.com/91826247/214017680-79cdf929-751a-47b3-a0a5-38a7e3d4ea19.png)
+
+
 ## To create a subnet (Public/Private)
 
 - Click Create Subnet
@@ -70,6 +74,11 @@ CloudFront (Content delivery network)
     CIDR Block (10.0.1.0/24)
 
     Name tag (Private-Subnet-ap-south-1a)
+    
+    ![Screenshot (91)](https://user-images.githubusercontent.com/91826247/214017927-682eebc1-ee7c-4d7c-8dc1-8e6fc16e19e4.png)
+
+    ![Screenshot (92)](https://user-images.githubusercontent.com/91826247/214017989-848eed4c-b023-414f-ab91-535b95a13df8.png)
+
 
 ##  Create a custom route table for Public/Private Subnet
 
@@ -78,6 +87,11 @@ CloudFront (Content delivery network)
 - For Name, enter a name for your route table (eg. Public-RT/Private-RT)
 - Choose your VPC (wp-vpc)
 - Choose Create route table
+![Screenshot (93)](https://user-images.githubusercontent.com/91826247/214018125-830660c5-e198-46fa-96e3-a3240c0eb896.png)
+
+![Screenshot (94)](https://user-images.githubusercontent.com/91826247/214018134-f1e5d4da-091a-49cb-a6af-e3993e34fb8a.png)
+![Screenshot (95)](https://user-images.githubusercontent.com/91826247/214018147-af901d78-5f6c-4de4-aa71-69cffd630716.png)
+
 
 ## To create an internet gateway and attach it to your VPC
 
@@ -85,6 +99,14 @@ CloudFront (Content delivery network)
 - Name your internet gateway (wp-vpc-igw)
 - Choose Create internet gateway
 - Select the internet gateway that you just created, and then choose Actions, Attach to VPC
+
+![Screenshot (96)](https://user-images.githubusercontent.com/91826247/214018216-9cdf9880-7cf1-4420-9784-8ede3bb13598.png)
+
+![Screenshot (97)](https://user-images.githubusercontent.com/91826247/214018232-1e8c9e92-4fdd-41c7-8aa7-5f0f76d68c4b.png)
+
+![Screenshot (98)](https://user-images.githubusercontent.com/91826247/214018243-e4557532-93ce-450b-bd16-2a99a68ba843.png)
+
+
 
 ## Create a MariaDB Database
 
@@ -102,6 +124,11 @@ CloudFront (Content delivery network)
 - Port : Leave the default value of 3306.
 - Click Create database
 
+![Screenshot (109)](https://user-images.githubusercontent.com/91826247/214018447-0cb9fe77-c13f-4e68-a103-dc0dde11ccc6.png)
+
+![Screenshot (110)](https://user-images.githubusercontent.com/91826247/214018463-69d63a1f-b813-439a-9cea-191c65c2467a.png)
+
+
 ## Create Elastic File System 
 
 - Open the EFS and Create file system 
@@ -112,6 +139,13 @@ CloudFront (Content delivery network)
     Choose Standard Storage class to create a file system 
 
     Choose One Zone to create a file system that uses the EFS One Zone
+
+
+![Screenshot (114)](https://user-images.githubusercontent.com/91826247/214018642-071fc89d-db99-459f-8265-83653e7e9275.png)
+
+![Screenshot (113)](https://user-images.githubusercontent.com/91826247/214018656-5cc51878-96c2-46b4-ad5e-831eed69b6ea.png)
+
+![Screenshot (112)](https://user-images.githubusercontent.com/91826247/214018714-2d125b67-aef5-415c-b679-07f8b6746de9.png)
 
 - Configure network access
 
@@ -134,6 +168,11 @@ CloudFront (Content delivery network)
 - Select all subnet in vpc 
 - Review and create Redis cluster
 
+
+
+![Screenshot (111)](https://user-images.githubusercontent.com/91826247/214018975-6047d7ec-94d3-4ee9-b4e6-cdd71589f93d.png)
+
+
 ## Create NAT instances
 
 - Open the Amazon EC2 console and Launch Instance 
@@ -149,6 +188,9 @@ CloudFront (Content delivery network)
 - Select the VPC (wp-vpc) and select your public subnet (Public-subnet-ap-south-1a)
 - Enable auto-assign Public IP
 - Review and Launch instance
+
+![Screenshot (76)](https://user-images.githubusercontent.com/91826247/214019483-224a0871-3303-49a0-9f22-07c5a66df5d8.png)
+
 
 ## Edit Route tables 
 - Select Public-RT
@@ -410,7 +452,6 @@ vi /etc/apache2/sites-available/wordpress.conf
     Disable Block Public Access
 
     Create bucket
-
   
    Go to Bucket policy ->
 
@@ -428,9 +469,21 @@ vi /etc/apache2/sites-available/wordpress.conf
       ]
     }
    ```
+   ![Screenshot (125)](https://user-images.githubusercontent.com/91826247/214020049-564bcba5-6ba8-4961-bd1d-07312942c8bf.png)
+
+   ![Screenshot (126)](https://user-images.githubusercontent.com/91826247/214020056-cb29f960-4b28-438b-943f-bc3ac205a69d.png)
+
+   ![Screenshot (127)](https://user-images.githubusercontent.com/91826247/214020074-7dece6f3-057d-4702-8fba-5176225d3662.png)
+
 - Create cloudfront disribiution
 
   Choose s3 bucket as a origin and create
+
+![Screenshot (128)](https://user-images.githubusercontent.com/91826247/214020177-63b4bcc6-8a41-4a4e-a156-5e4c14837ce4.png)
+
+
+![Screenshot (129)](https://user-images.githubusercontent.com/91826247/214020182-895649c2-9dca-47a6-b630-e192f39c74f8.png)
+![Screenshot (130)](https://user-images.githubusercontent.com/91826247/214020193-c8435347-2e1f-4f25-92b6-c09cabc5bc9a.png)
 
   install aws cli tool
 
@@ -448,19 +501,24 @@ vi /etc/apache2/sites-available/wordpress.conf
 
    `vi .htaccess` for rewriting urls to cloudfront CDN
 
-   ```
+   
     Options +FollowSymlinks
  
     RewriteEngine on
  
     rewriterule ^wp-content/uploads/(.*)$ https://cloudfront Domain name/$1 [r=301,nc]
-    ```
+    
 
 - Create AMI of master server
 
     Right-click the instance (master server) you want to use as the your AMI, and choose Create Image
 
      Type a name and description, and then choose Create Image
+     
+     
+     ![Screenshot (135)](https://user-images.githubusercontent.com/91826247/214022818-79c51449-1ae9-4943-9dc9-c033c4181eb7.png)
+
+     
 
 
 - Create a  Load Balancer 
@@ -480,6 +538,19 @@ vi /etc/apache2/sites-available/wordpress.conf
     Create target group
 
     Choose Create
+    
+    
+    ![Screenshot (136)](https://user-images.githubusercontent.com/91826247/214022888-b11ef485-9614-461d-a3ef-8bb91c30050f.png)
+
+    
+    ![Screenshot (137)](https://user-images.githubusercontent.com/91826247/214022910-be3e27a2-a2f7-426f-95f1-abd4002caf88.png)
+![Screenshot (138)](https://user-images.githubusercontent.com/91826247/214022955-3157338f-2e1b-405e-afc2-020d0e27269a.png)
+
+![Screenshot (139)](https://user-images.githubusercontent.com/91826247/214022993-970c7bd8-97a8-4e59-a9cc-aae6ff36fe7b.png)
+
+![Screenshot (140)](https://user-images.githubusercontent.com/91826247/214023031-a06ac2ac-a3f6-4960-84a7-6ab9a1d39451.png)
+
+
 
 - Create a launch configuration
 
@@ -492,6 +563,13 @@ vi /etc/apache2/sites-available/wordpress.conf
     Select do not assign public ip to instance
 
     Choose create
+    
+    ![Screenshot (141)](https://user-images.githubusercontent.com/91826247/214023086-57f6fb08-dcbe-494a-bd15-a2cf9d7b34e4.png)
+
+    ![Screenshot (142)](https://user-images.githubusercontent.com/91826247/214023113-3906063e-ef89-4cbc-86e6-39639891da66.png)
+![Screenshot (143)](https://user-images.githubusercontent.com/91826247/214023125-c539132f-81a9-4259-8cfa-c49aaf92f6de.png)
+
+
 
 - Create an Auto Scaling group
 
@@ -504,9 +582,26 @@ vi /etc/apache2/sites-available/wordpress.conf
     Configure group size and scaling policies,  Desired and Maximum capacity
 
     Choose Create Auto Scaling group
+![Screenshot (144)](https://user-images.githubusercontent.com/91826247/214023193-f56cf6c9-bb23-423e-9fe4-fc095c7656c9.png)
+
+
+![Screenshot (145)](https://user-images.githubusercontent.com/91826247/214023201-7d43ab59-25c0-42e2-a2f0-4c85a170bf8e.png)
+
+![Screenshot (146)](https://user-images.githubusercontent.com/91826247/214023227-1824ec45-4c6f-4cf0-ad08-53d7f6840bb5.png)
+
+  ![Screenshot (147)](https://user-images.githubusercontent.com/91826247/214023237-b4102403-111d-4b25-82d4-d6f7bfc11f5e.png)
+
+![Screenshot (148)](https://user-images.githubusercontent.com/91826247/214023247-92bb63b1-c66e-4db7-a7aa-206e3421e721.png)
+
+
     
     To confirm that our ASG is working properly
 
     Go to ec2 dashboard and terminate any one instance. It will initialize a new instance
-
+    
+    
+    
+    
+    
+    
 - So that's our complete project for deploying wordpress website on AWS
